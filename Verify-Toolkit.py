@@ -8,8 +8,9 @@ import tomllib
 
 root = Path(__file__).resolve().parent
 errors = []
+files = [p for p in root.rglob('*') if p.is_file() and p.relative_to(root).parts[0] != '.git']
 manifest = json.loads((root / 'manifest.json').read_text(encoding='utf-8'))
-actual = {p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_file() and p.name != 'manifest.json'}
+actual = {p.relative_to(root).as_posix() for p in files if p.name != 'manifest.json'}
 expected = set(manifest['files'])
 for name in sorted(expected - actual):
     errors.append('Missing: ' + name)
@@ -21,7 +22,7 @@ for name in sorted(expected & actual):
         errors.append('Hash mismatch: ' + name)
 
 roles = set()
-for p in root.rglob('*.toml'):
+for p in (p for p in files if p.suffix == '.toml'):
     try:
         data = tomllib.loads(p.read_text(encoding='utf-8-sig'))
         if p.parent.name == 'agents':
@@ -39,7 +40,7 @@ needed = {'pipeline_' + s for s in ('planner','implementer','documentation','spe
 if roles != needed:
     errors.append('Pipeline role set is incomplete or unexpected')
 
-for p in root.rglob('SKILL.md'):
+for p in (p for p in files if p.name == 'SKILL.md'):
     text = p.read_text(encoding='utf-8-sig')
     frontmatter = re.match(r'\A---\s*\n(.*?)\n---', text, re.S)
     if not frontmatter:
@@ -49,7 +50,7 @@ for p in root.rglob('SKILL.md'):
         if not re.search(r'^' + field + r':\s*\S', frontmatter[1], re.M):
             errors.append('Missing skill ' + field + ': ' + str(p.relative_to(root)))
 
-for p in root.rglob('*.md'):
+for p in (p for p in files if p.suffix == '.md'):
     text = p.read_text(encoding='utf-8-sig')
     for link in re.findall(r'\]\(([^)]+)\)', text):
         target = link.split('#', 1)[0]
@@ -64,7 +65,7 @@ patterns = {
     'OpenAI-style secret': r'\bsk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{24,}',
     'GitHub-style secret': r'\b(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,})',
 }
-for p in root.rglob('*'):
+for p in files:
     if p.is_file() and p.suffix.lower() in {'.md','.toml','.yaml','.json','.txt','.sh','.ps1'}:
         text = p.read_text(encoding='utf-8-sig')
         for label, pattern in patterns.items():

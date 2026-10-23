@@ -12,6 +12,7 @@ Verified locally:
 - Installer did not install config.toml or AGENTS.md.
 - Standard-library verifier passed manifest hashes, TOML syntax, required skill frontmatter fields, all eight role names, local Markdown links, and a heuristic credential/personal-path scan.
 - Final ZIP was extracted into an isolated fixture and verified again. A deliberate README modification in that fixture was detected as a hash mismatch.
+- After GitHub preparation, the verifier was updated to ignore a clone's root `.git` metadata. A separate fixture with representative `.git` files passed; a deliberate toolkit README change still failed. README sharing instructions now refer to the private repository.
 
 Verification commands used the bundled Python 3 runtime and PowerShell in the task workspace. Intermediate build scripts and fixtures remain outside this shareable bundle. `Verify-Toolkit.py` is included for recipients to repeat the structural checks with Python 3.11+.
 

@@ -1,6 +1,6 @@
 # Codex toolkit
 
-Portable review bundle prepared on 2026-10-23. It contains two personal workflow skills, eight pipeline agent definitions, selected configuration preferences, and an optional third-party Playwright CLI skill. No installed configuration was changed and nothing was published.
+Portable toolkit prepared on 2026-10-23. It contains two personal workflow skills, eight pipeline agent definitions, selected configuration preferences, and an optional third-party Playwright CLI skill. Installed user configuration was not changed. The toolkit is hosted in the private [GotThatWeeFee/codex-toolkit repository](https://github.com/GotThatWeeFee/codex-toolkit).
 
 ## Contents
 
@@ -16,7 +16,7 @@ Portable review bundle prepared on 2026-10-23. It contains two personal workflow
 
 ## Install into one project
 
-Extract the ZIP first. From the extracted `codex-toolkit` folder, run the following in PowerShell. Replace the example project path with your intended existing project:
+Clone the repository or download and extract its ZIP. From the toolkit root folder (the folder containing this README), run the following in PowerShell. Replace the example project path with your intended existing project:
 
 ```powershell
 .\Install-Toolkit.ps1 -ProjectPath 'D:\Projects\MyProject' -WhatIf
@@ -39,11 +39,13 @@ With Python 3.11 or newer:
 py -3 .\Verify-Toolkit.py
 ```
 
-The verifier uses only the standard library. It checks the manifest, TOML syntax, required skill frontmatter fields, local Markdown links, unique agent names and expected pipeline roles. This is structural validation, not a real Codex discovery or workflow test.
+The verifier uses only the standard library. It checks the manifest, TOML syntax, required skill frontmatter fields, local Markdown links, unique agent names and expected pipeline roles. It ignores the root `.git` metadata directory in a cloned checkout. This is structural validation, not a real Codex discovery or workflow test.
 
 ## Sharing and updates
 
-Share this folder or ZIP privately, or place the folder contents in a Git repository after review. No repository or remote has been created. For updates, compare with the prior version and merge deliberately; the installer does not overwrite. This is a repository distribution, not an installable Codex plugin package. A plugin can be prepared later if broader distribution is desired. No license was chosen for the personal workflow content; decide the intended reuse terms before public distribution. The optional Playwright content retains its own license.
+The repository is private. The owner can invite friends through [repository access settings](https://github.com/GotThatWeeFee/codex-toolkit/settings/access); each friend must accept the invitation before accessing it. Then share the repository link, and friends can clone it or download a ZIP using GitHub's Code menu. A repository link alone does not grant access. No collaborator invitations were sent during setup.
+
+For updates, compare with the prior version and merge deliberately; the installer does not overwrite. This is a repository distribution, not an installable Codex plugin package. A plugin can be prepared later if broader distribution is desired. No license was chosen for the personal workflow content; decide the intended reuse terms before public distribution. The optional Playwright content retains its own license.
 
 Read PORTABILITY.md before use. Account connections, desktop state and permissions do not transfer with this bundle.
 

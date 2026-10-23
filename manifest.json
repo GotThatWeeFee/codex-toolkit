@@ -38,9 +38,9 @@
     "optional/skills/playwright/scripts/playwright_cli.sh": "3fce0ea2b9875179f701d9f4c03425545c441b2769cd6c6df964cc7d1d1dbfa8",
     "optional/skills/playwright/SKILL.md": "9eb38edaeb599c862dc2976024a837c1efa5d51b81333390a2ffda122dc4b521",
     "PORTABILITY.md": "bf9b9a89dc9c0fcc9db71de5db4d1626ca57bc46858a4fcda5b100a6c7215086",
-    "README.md": "f921d60ae5cc6e201d4778608e48581c6dca6d719a12516823fd43b80433fe49",
+    "README.md": "dec89d4f71711027245f0b31ea2f77472ff1dc23f3eb0ceff5ca6ac5aaaecff8",
     "settings/config.example.toml": "b005f46eec069c0ac30435db576c3ee19a229b81031813a4f5399ad398932192",
-    "VALIDATION.md": "ea011c9ffeb042edaeef244ece58d6350eb3bd01196651d423b36974b34178ad",
-    "Verify-Toolkit.py": "d71ddd24354f244fa95c77fe467896b7a68d1a037525f3d252a10e4a2484b2ca"
+    "VALIDATION.md": "b01526ba9f23347b16795fed6acf99a4ff504318990c07adc7168e9a0249782a",
+    "Verify-Toolkit.py": "647719f575e61a411e72b4d38840ccc90bdefd8c44b39c119b49d54fec11873d"
   }
 }
