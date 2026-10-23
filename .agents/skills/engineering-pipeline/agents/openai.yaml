@@ -1,0 +1,4 @@
+interface:
+  display_name: "Engineering Pipeline"
+  short_description: "Run gated coding with researched agent-ready documentation"
+  default_prompt: "Use $engineering-pipeline to implement this task with dedicated documentation and researched project rules, risk-routed review, reviewer education, and human approval gates."

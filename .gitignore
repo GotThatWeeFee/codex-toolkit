@@ -1,0 +1,14 @@
+# Keep future local state and credentials out of this distribution.
+.env
+.env.*
+!.env.example
+auth*.json
+apikey.txt
+*.pem
+*.key
+*.sqlite*
+sessions/
+memories/
+logs/
+__pycache__/
+.DS_Store

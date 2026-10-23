@@ -1,0 +1,6 @@
+interface:
+  display_name: "Request Model Gate"
+  short_description: "Recommend settings for each new substantive objective."
+  default_prompt: "Use $request-model-gate to show a brief minimum reliable model and reasoning-effort recommendation before starting this objective, even when no switch is needed."
+policy:
+  allow_implicit_invocation: true
