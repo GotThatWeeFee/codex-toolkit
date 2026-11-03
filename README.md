@@ -14,6 +14,22 @@ It does not change a recipient's configuration, account permissions, connections
    codex plugin add codex-toolkit@codex-toolkit
    ```
 
+   If PowerShell reports that `codex` is not recognized, use the Codex executable bundled with the desktop app:
+
+   ```powershell
+   $codexExe = Get-ChildItem "$env:LOCALAPPDATA\OpenAI\Codex\bin" -Filter codex.exe -Recurse -ErrorAction SilentlyContinue |
+       Sort-Object LastWriteTime -Descending |
+       Select-Object -First 1
+
+   if ($codexExe) {
+       & $codexExe.FullName plugin marketplace add <owner/repo> --ref main
+   } else {
+       Write-Host "No bundled Codex executable found."
+   }
+   ```
+
+   Restart Codex after adding the marketplace. In **Plugins**, select **Codex Toolkit** and install the core plugin. Install **Jira Workflow** only when you need its Jira guidance.
+
 3. If you want the 13 engineering roles, clone or otherwise obtain a local checkout and run the role helper after reviewing its preflight:
 
    ```powershell

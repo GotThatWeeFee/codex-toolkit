@@ -18,6 +18,22 @@ codex plugin marketplace add <owner/repo>
 codex plugin add codex-toolkit@codex-toolkit
 ```
 
+If PowerShell cannot find `codex`, locate the executable bundled with the Codex desktop app and invoke it directly:
+
+```powershell
+$codexExe = Get-ChildItem "$env:LOCALAPPDATA\OpenAI\Codex\bin" -Filter codex.exe -Recurse -ErrorAction SilentlyContinue |
+    Sort-Object LastWriteTime -Descending |
+    Select-Object -First 1
+
+if ($codexExe) {
+    & $codexExe.FullName plugin marketplace add <owner/repo> --ref main
+} else {
+    Write-Host "No bundled Codex executable found."
+}
+```
+
+Restart Codex after adding the marketplace. Open **Plugins**, select the **Codex Toolkit** marketplace, then install **Codex Toolkit**. The marketplace registration only adds the catalog; each plugin must be installed separately. Install **Jira Workflow** when its Jira guidance is needed.
+
 `codex plugin add` is the documented command, not `codex plugin install`. Consult your client help for its marketplace locator syntax and UI route. This documentation does not claim a fresh-client install or discovery was exercised.
 
 To add the optional Jira guidance:

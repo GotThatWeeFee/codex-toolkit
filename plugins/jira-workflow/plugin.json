@@ -9,7 +9,7 @@
         "displayName": "Jira Workflow",
         "shortDescription": "Plan and track Jira work",
         "longDescription": "Optional neutral Jira planning and verified progress updates using recipient-approved connections and authorization.",
-        "developerName": "Codex Toolkit Maintainers",
+        "developerName": "Gregory Powers",
         "category": "Productivity",
         "logo": "./assets/icon.svg",
         "composerIcon": "./assets/icon.svg"
