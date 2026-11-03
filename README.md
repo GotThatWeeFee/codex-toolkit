@@ -33,8 +33,8 @@ It does not change a recipient's configuration, account permissions, connections
 3. If you want the 13 engineering roles, clone or otherwise obtain a local checkout and run the role helper after reviewing its preflight:
 
    ```powershell
-   pwsh -File .\Install-Agents.ps1 -Action Install -WhatIf
-   pwsh -File .\Install-Agents.ps1 -Action Install
+   powershell -ExecutionPolicy Bypass -File .\Install-Agents.ps1 -Action Install -WhatIf
+   powershell -ExecutionPolicy Bypass -File .\Install-Agents.ps1 -Action Install
    ```
 
 4. Optionally add Jira guidance when you have an approved Jira connection and authorization:
@@ -65,7 +65,7 @@ No root license is included. This repository does not grant or imply public redi
 
 ## Updating
 
-Update installed plugins through the native marketplace mechanism, for example `codex plugin marketplace upgrade` after checking your client help. Plugin updates do not update copied role TOMLs. Review changes in a local checkout, then use `Install-Agents.ps1 -Action Update` for ledger-owned, unchanged roles. See [installation](docs/installation.md#update-or-remove-roles).
+Update installed plugins through the native marketplace mechanism, for example `codex plugin marketplace upgrade` after checking your client help. Plugin updates do not update copied role TOMLs. Review changes in a local checkout, then use `Install-Agents.ps1 -Action Update`. Install and Update back up differing existing canonical role files before replacement. See [installation](docs/installation.md#update-or-remove-roles).
 
 ## Scope and validation limits
 

@@ -28,7 +28,7 @@ Each skill is stored once under `plugins/codex-toolkit/skills/`. Guidance never 
 
 ## Roles, audit, and local boundaries
 
-The pipeline supplies 13 canonical roles: accessibility, contract, documentation, .NET practices, final, performance/operability, reliability, security, and test-strategy reviewers; planner, junior developer, QA engineer, and senior engineer. `Install-Agents.ps1` handles only these TOMLs and its ledger; it does not install plugins/skills or change configuration/hooks. See [installation](installation.md).
+The pipeline supplies 13 canonical roles: accessibility, contract, documentation, .NET practices, final, performance/operability, reliability, security, and test-strategy reviewers; planner, junior developer, QA engineer, and senior engineer. `Install-Agents.ps1` manages these TOMLs, its ledger, and recovery backups. On Windows it can install/update the required PowerShell runtime after permission is granted; it does not install plugins/skills or change configuration/hooks. See [installation](installation.md).
 
 The pipeline also contains an optional metadata-only local audit helper and schema. It is inactive unless separately authorized with a recipient-approved local audit location; no hooks are installed or activated. Its documented privacy boundary excludes prompts, transcripts, raw workspace paths, tool data, and credentials.
 

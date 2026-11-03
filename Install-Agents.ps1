@@ -1,11 +1,11 @@
-#Requires -Version 7.2
+#Requires -Version 5.1
 <#
 .SYNOPSIS
 Installs, updates, or removes only the toolkit's thirteen custom-agent TOMLs.
 .DESCRIPTION
 CodexHome resolves from the explicit parameter, CODEX_HOME, then $HOME/.codex.
-Identical unowned files are skipped without adoption; removal never touches them.
-Differing unowned or modified owned files are conflicts. WhatIf performs preflight only.
+Install/Update back up existing roles before replacement and adopt identical roles.
+Remove refuses modified owned files. WhatIf performs preflight only.
 Caught failures attempt guarded rollback. Process interruption is not transactional:
 inspect reported paths and hashes before manual recovery; never delete unrelated files.
 #>
@@ -16,6 +16,44 @@ param(
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+
+# Keep this bootstrap compatible with Windows PowerShell 5.1. All role work runs
+# under 7.2+; forward operation parameters without rebuilding command text.
+if ($PSVersionTable.PSVersion -lt [version]'7.2') {
+    function Find-CompatiblePowerShell {
+        $candidates = @((Get-Command pwsh -CommandType Application -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source))
+        if ($env:ProgramFiles) { $candidates += Join-Path $env:ProgramFiles 'PowerShell/7/pwsh.exe' }
+        foreach ($candidate in ($candidates | Select-Object -Unique)) {
+            if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+                $versionText = & $candidate -NoLogo -NoProfile -NonInteractive -Command '$PSVersionTable.PSVersion.ToString()'
+                $parsedVersion = $null
+                if ($LASTEXITCODE -eq 0 -and [version]::TryParse([string]$versionText, [ref]$parsedVersion) -and $parsedVersion -ge [version]'7.2') { return $candidate }
+            }
+        }
+    }
+    $runtime = Find-CompatiblePowerShell
+    if (-not $runtime) {
+        if ($WhatIfPreference) { Write-Output 'PowerShell 7.2+ is required. A real run will request permission to install Microsoft.PowerShell through winget before continuing.'; return }
+        if ($env:OS -ne 'Windows_NT') { throw 'Install PowerShell 7.2+ using your platform package manager, then rerun this script.' }
+        $winget = Get-Command winget -CommandType Application -ErrorAction SilentlyContinue
+        if (-not $winget) { throw 'winget is unavailable. Install Microsoft App Installer or PowerShell 7.2+, then rerun this script.' }
+        $answer = Read-Host 'PowerShell 7.2+ is required. Install/update Microsoft.PowerShell using winget and continue? [y/N]'
+        if ($answer -notmatch '^(?i:y|yes)$') { throw 'PowerShell installation declined; agent installation stopped.' }
+        & $winget.Source install --id Microsoft.PowerShell --exact --source winget
+        if ($LASTEXITCODE -ne 0) { throw "PowerShell installation failed (exit code $LASTEXITCODE); agent installation stopped." }
+        $runtime = Find-CompatiblePowerShell
+        if (-not $runtime) { throw 'PowerShell 7.2+ was not found after installation; agent installation stopped.' }
+    }
+    $forwardArguments = @('-NoLogo','-NoProfile')
+    if ($env:OS -eq 'Windows_NT') { $forwardArguments += @('-ExecutionPolicy','Bypass') }
+    $forwardArguments += @('-File',$PSCommandPath,'-Action',$Action)
+    if ($CodexHome) { $forwardArguments += @('-CodexHome',$CodexHome) }
+    if ($WhatIfPreference) { $forwardArguments += '-WhatIf' }
+    if ($PSBoundParameters.ContainsKey('Confirm')) { $forwardArguments += ('-Confirm:$' + $PSBoundParameters['Confirm'].ToString().ToLowerInvariant()) }
+    & $runtime @forwardArguments
+    if ($LASTEXITCODE -ne 0) { throw "Agent installer failed (exit code $LASTEXITCODE)." }
+    return
+}
 
 function Assert-PlainPath([string]$Path) {
     $cursor = [IO.Path]::GetFullPath($Path)
@@ -82,32 +120,30 @@ if ($Action -ne 'Remove') {
     }
 }
 $changes = [Collections.Generic.List[object]]::new()
-$skipped = [Collections.Generic.List[string]]::new()
+$adopted = $false
 $allPaths = @(@($owned.Keys) + @($desired.Keys) | Sort-Object -Unique)
 foreach ($relative in $allPaths) {
     $destination = [IO.Path]::GetFullPath((Join-Path $root $relative))
     if (-not $destination.StartsWith($root + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'Destination escaped CodexHome.' }
     $before = Read-Bytes $destination
-    if ($owned.ContainsKey($relative)) {
+    if ($Action -eq 'Remove' -and $owned.ContainsKey($relative)) {
         if ($null -eq $before -or (Get-Hash $before) -ne $owned[$relative]) { throw "Owned file missing or modified; preserve and reconcile manually: $destination" }
-    } elseif ($null -ne $before) {
-        if ($desired.ContainsKey($relative) -and (Get-Hash $before) -eq (Get-Hash $desired[$relative])) {
-            $skipped.Add($destination)
-            $desired.Remove($relative)
-            continue
-        }
-        throw "Differing unowned file refused: $destination"
     }
+    if (-not $owned.ContainsKey($relative)) { $adopted = $true }
     $after = if ($desired.ContainsKey($relative)) { $desired[$relative] } else { $null }
-    if ($Action -eq 'Install' -and $owned.ContainsKey($relative) -and ($null -eq $after -or (Get-Hash $before) -ne (Get-Hash $after))) { throw 'Installed version differs; use Update.' }
     if ($null -eq $before -or $null -eq $after -or (Get-Hash $before) -ne (Get-Hash $after)) {
         $changes.Add([pscustomobject]@{ Path=$destination; Before=$before; After=$after })
     }
 }
-foreach ($path in $skipped) { Write-Output "Skipped identical unowned file (not adopted; removal will preserve it): $path" }
 $nextFiles = @($desired.Keys | Sort-Object | ForEach-Object { @{path=$_; sha256=(Get-Hash $desired[$_])} })
 $nextLedger = if ($Action -ne 'Remove') { [Text.Encoding]::UTF8.GetBytes((@{version=1;files=$nextFiles} | ConvertTo-Json -Depth 5) + "`n") } else { $null }
-if ($changes.Count -eq 0 -and $Action -ne 'Remove' -and $null -ne $ledgerBefore) { Write-Output 'Owned role files already match; no changes.'; return }
+if ($changes.Count -eq 0 -and -not $adopted -and $Action -ne 'Remove' -and $null -ne $ledgerBefore) { Write-Output 'Owned role files already match; no changes.'; return }
+$backupItems = @($changes | Where-Object { $null -ne $_.Before })
+$backupPath = Join-Path $root ('agent-role-backups/' + [DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss-fff') + '-' + [guid]::NewGuid().ToString('N'))
+if ($backupItems.Count -or $null -ne $ledgerBefore) {
+    Assert-PlainPath $backupPath
+    Write-Output "Backup planned: $backupPath ($($backupItems.Count) role file(s); previous ledger included when present)."
+}
 if (-not $PSCmdlet.ShouldProcess($root, "$Action $($changes.Count) role file(s) and ownership ledger")) { return }
 
 $applied = [Collections.Generic.List[object]]::new()
@@ -123,6 +159,25 @@ try {
             [void][IO.Directory]::CreateDirectory($directory)
             $createdDirectories.Add($directory)
         }
+    }
+    # Complete and verify the durable backup before touching any destination.
+    if ($backupItems.Count -or $null -ne $ledgerBefore) {
+        Assert-PlainPath $backupPath
+        [void][IO.Directory]::CreateDirectory($backupPath)
+        foreach ($change in $backupItems) {
+            Assert-Same $change.Path $change.Before
+            $backupFile = Join-Path $backupPath ([IO.Path]::GetFileName($change.Path))
+            $stream = [IO.File]::Open($backupFile,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+            try { $stream.Write($change.Before,0,$change.Before.Length); $stream.Flush($true) } finally { $stream.Dispose() }
+            Assert-Same $backupFile $change.Before
+        }
+        if ($null -ne $ledgerBefore) {
+            Assert-Same $ledgerPath $ledgerBefore
+            $backupLedger = Join-Path $backupPath '.codex-toolkit-agents.json'
+            [IO.File]::WriteAllBytes($backupLedger,$ledgerBefore)
+            Assert-Same $backupLedger $ledgerBefore
+        }
+        Write-Output "Backup saved: $backupPath"
     }
     foreach ($change in $changes) {
         Assert-Same $change.Path $change.Before
