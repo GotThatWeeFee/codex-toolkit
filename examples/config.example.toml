@@ -1,0 +1,5 @@
+# Optional, deliberately empty configuration example.
+# Review your client version's supported settings and merge selected values manually.
+# Do not replace an existing config.toml. Models and capabilities vary by account.
+# Roles are installed separately under the selected Codex home's agents directory.
+# This toolkit does not change model, reasoning, service tier, permissions or hooks.

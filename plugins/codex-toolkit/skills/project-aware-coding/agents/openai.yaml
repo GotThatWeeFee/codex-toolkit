@@ -1,0 +1,6 @@
+interface:
+  display_name: "Project-Aware Coding"
+  short_description: "Follow project conventions and document C# members"
+  default_prompt: "Use $project-aware-coding when implementing this coding task."
+policy:
+  allow_implicit_invocation: true

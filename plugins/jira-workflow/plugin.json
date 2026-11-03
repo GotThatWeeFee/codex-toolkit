@@ -1,0 +1,19 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "jira-workflow",
+  "version": "0.2.0",
+  "description": "Optional neutral Jira planning and verified progress updates using recipient-approved connections and authorization.",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Jira Workflow",
+        "shortDescription": "Plan and track Jira work",
+        "longDescription": "Optional neutral Jira planning and verified progress updates using recipient-approved connections and authorization.",
+        "developerName": "Codex Toolkit Maintainers",
+        "category": "Productivity",
+        "logo": "./assets/icon.svg",
+        "composerIcon": "./assets/icon.svg"
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Change Explanation"
+  short_description: "Explain changes and draft detailed commit messages"
+policy:
+  allow_implicit_invocation: true

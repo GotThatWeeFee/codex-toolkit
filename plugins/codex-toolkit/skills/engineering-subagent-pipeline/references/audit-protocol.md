@@ -1,0 +1,21 @@
+# Optional engineering pipeline audit protocol
+
+This helper is shipped as inactive source. Neither plugin installation nor Install-Agents installs hooks, changes trust, or activates collection. Execution and any hook configuration require the recipient's separate authorization. The caller must supply an explicit local `-AuditRoot`; there is no account-specific default. Review the script and event schema before opting in.
+
+## Events and context
+
+[audit-event.schema.json](audit-event.schema.json) defines versioned JSONL hook observations and coordinator facts. Allowed hook names are SessionStart, UserPromptSubmit, SubagentStart, SubagentStop, PreCompact, PostCompact, Interrupt, Stop, and SessionEnd. These names describe adapter inputs, not confirmed host support. Verify current host hook APIs before configuring anything. Hook records are observations, never approval or readiness.
+
+Coordinator facts are PlanApproved, ImplementationCompleted, ReviewCompleted, ValidationCompleted, HandoffBlocked and HandoffReady. Coordinator calls require already-computed opaque lowercase SHA-256 workspace, run and event fingerprints (`-WorkspaceFingerprint`, `-RunFingerprint`, `-CoordinatorEventFingerprint`). Never pass a raw workspace path. Keep workspace/run scope stable for the chain and the event fingerprint stable on retries of one logical transition. A trusted FullLanguage route is required; unavailable or failed coordinator recording blocks an audit-enabled handoff. Missing, legacy, incomplete, out-of-order or terminal-blocked chains remain blocked. Recording ImplementationCompleted, ReviewCompleted, ValidationCompleted or HandoffReady before its prerequisite facts permanently blocks that workspace/run; later facts cannot restore readiness. Identical-event retries are deduplicated before rendering, so they do not add transitions. Summary timestamps describe historical evidence age, not live readiness.
+
+## Privacy, access and retention
+
+Input is shallow and bounded to 65,536 characters. Only allowlisted model/permission/lifecycle tokens and keyed SHA-256 session, agent and workspace fingerprints persist. Prompts, messages, transcripts, tool data, credentials and raw paths must never be added. The local `.workspace-key` is sensitive correlation material. Restrict the chosen root, key, scripts and any separately configured hooks to the recipient and approved administrators; inspect inherited access before activation. The helper does not set ACLs or assert trust. Diagnostic failures use sanitized errors; durable events are separate from those diagnostics.
+
+The root contains `events/events.jsonl`, `handoffs/latest.md`, `.sequence`, `.workspace-key`, and optional `events/quarantine` crash-tail fragments. The helper sends no network telemetry and performs no automatic retention pruning. Before collection, the recipient must choose retention and access policy suitable for local sensitive metadata. Preserve records by default; deletion, export, or retention changes require separate authorization. Do not place the root in a source repository or public/shared sync folder by default.
+
+## Failure and recovery
+
+Appends use a local mutex and monotonic sequence; sequence gaps are possible after failure. Hook failures are fail-open and do not persist input-derived errors. Coordinator append/summary failures return sanitized nonzero status and block handoff. An identical coordinator retry deduplicates the fact and refreshes its summary. Summary replacement occurs through a same-directory temporary file. Malformed terminal JSONL fragments are quarantined while preserving the valid prefix. This is local metadata coordination, not a distributed transaction or proof of task correctness.
+
+On failure preserve the root and key, inspect valid records and quarantined tails, and retry only the same logical fact with its original identifiers. Stop collection through the recipient's reviewed hook configuration when needed; do not automatically delete records or alter trust. No fixtures, automatic activation or runtime verification are bundled. Fault-injection parameters retained in the helper are maintenance facilities, not normal operating options. This rebuild did not execute the helper.

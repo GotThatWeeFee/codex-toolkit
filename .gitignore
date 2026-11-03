@@ -1,14 +1,22 @@
-# Keep future local state and credentials out of this distribution.
+# Generated and account-local material
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
 .env
 .env.*
 !.env.example
-auth*.json
-apikey.txt
-*.pem
-*.key
-*.sqlite*
+*.log
+audit/
+logs/
 sessions/
 memories/
-logs/
-__pycache__/
-.DS_Store
+credentials*
+auth.json
+hooks.json
+config.toml
+node_modules/
+.cache/
+*.tmp
+*.bak
+.codex-toolkit-agents.json

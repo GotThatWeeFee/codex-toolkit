@@ -1,56 +1,56 @@
-# Codex toolkit
+# Codex Toolkit
 
-Portable toolkit prepared on 2026-10-23. It contains two personal workflow skills, eight pipeline agent definitions, selected configuration preferences, and an optional third-party Playwright CLI skill. Installed user configuration was not changed. The toolkit is hosted in the private [GotThatWeeFee/codex-toolkit repository](https://github.com/GotThatWeeFee/codex-toolkit).
+Codex Toolkit is a reusable collection of engineering guidance distributed as native Codex plugins. It has a small, explicit role installer for people who also want the engineering pipeline's custom-agent roles.
 
-## Contents
+It does not change a recipient's configuration, account permissions, connections, hooks, model selection, or project instructions. Installing it does not itself authorize tests, Git mutations, connector writes, publication, deployment, or live runs.
 
-- `.agents/skills/engineering-pipeline/`: the complete workflow, UI metadata, and nine references.
-- `.agents/skills/request-model-gate/`: model recommendation checkpoint and UI metadata.
-- `.codex/agents/`: eight model-neutral pipeline roles.
-- `optional/skills/playwright/`: optional CLI browser automation with its original Apache-2.0 license and attribution.
-- `settings/config.example.toml`: selected model, reasoning, response, personality and service-tier preferences.
-- `instructions/AGENTS.example.md`: personal instructions to review and merge manually.
-- `INVENTORY.md`, `inventory.json`, `PORTABILITY.md`: scope, exclusions, dependencies and adaptations.
-- `Install-Toolkit.ps1`: project installer with preview and conflict refusal.
-- `Verify-Toolkit.py` and `manifest.json`: file-integrity and structural checks.
+## Start here
 
-## Install into one project
+1. Obtain access to this repository and use a compatible Codex client.
+2. Add this repository as a marketplace, then add the core plugin:
 
-Clone the repository or download and extract its ZIP. From the toolkit root folder (the folder containing this README), run the following in PowerShell. Replace the example project path with your intended existing project:
+   ```powershell
+   codex plugin marketplace add <owner/repo>
+   codex plugin add codex-toolkit@codex-toolkit
+   ```
 
-```powershell
-.\Install-Toolkit.ps1 -ProjectPath 'D:\Projects\MyProject' -WhatIf
-.\Install-Toolkit.ps1 -ProjectPath 'D:\Projects\MyProject'
-```
+3. If you want the 13 engineering roles, clone or otherwise obtain a local checkout and run the role helper after reviewing its preflight:
 
-The installer copies only the two workflow skills and eight agents. Add `-IncludePlaywright` to either command to include the optional skill. It refuses existing destination files before copying anything, skips config and AGENTS.md, and downloads nothing. Review/merge existing installations manually. No execution-policy change is required by this bundle; environments that block scripts can use the manual steps below.
+   ```powershell
+   pwsh -File .\Install-Agents.ps1 -Action Install -WhatIf
+   pwsh -File .\Install-Agents.ps1 -Action Install
+   ```
 
-Manual installation: copy each folder from `.agents/skills/` into the target project's `.agents/skills/`, and the eight TOML files from `.codex/agents/` into the target project's `.codex/agents/`. Preserve existing files. Optionally copy `optional/skills/playwright/` into the project's `.agents/skills/playwright/`. Merge selected settings and instruction text yourself; do not replace an existing config.toml or AGENTS.md wholesale.
+4. Optionally add Jira guidance when you have an approved Jira connection and authorization:
 
-Open the project in Codex, trust it only if appropriate, and restart the session if discovery has not refreshed. Confirm `$engineering-pipeline` and `$request-model-gate` appear and that all eight custom agent types are available before starting real pipeline work. Model identifiers must be checked against the recipient's account. If roles are missing, stop and resolve discovery instead of claiming a full pipeline run.
+   ```powershell
+   codex plugin add jira-workflow@codex-toolkit
+   ```
 
-The model-gate skill intentionally asks for readiness when the current model/effort cannot be verified. Installing the example AGENTS.md text makes that checkpoint apply at the start of each substantive objective. Review this preference before adopting it.
+The marketplace name in these examples is `codex-toolkit`; replace `<owner/repo>` with the repository locator you were given (for example, `GotThatWeeFee/codex-toolkit` where that locator is appropriate). These commands are documented from installed CLI help and source manifests; this repository does not claim that installation, discovery, role loading, or connector access was exercised in a fresh account.
 
-## Verify the extracted bundle
+Read [installation](docs/installation.md) for prerequisites, updates, and recovery boundaries. [Components](docs/components.md) describes the plugin contents; [engineering pipeline](docs/engineering-pipeline.md) describes the optional workflow; [migration](docs/migration.md) explains how to retire older copies deliberately.
 
-With Python 3.11 or newer:
+## What is included
 
-```powershell
-py -3 .\Verify-Toolkit.py
-```
+The **Codex Toolkit** plugin contains ten canonical skills: `analyzing-dotnet-performance`, `change-explanation`, `codex-working-playbook`, `dotnet-integration-validation`, `engineering-subagent-pipeline`, `evidence-bound-operations`, `project-aware-coding`, `repository-documentation`, `safe-git-integration`, and `sql-object-impact-analysis`.
 
-The verifier uses only the standard library. It checks the manifest, TOML syntax, required skill frontmatter fields, local Markdown links, unique agent names and expected pipeline roles. It ignores the root `.git` metadata directory in a cloned checkout. This is structural validation, not a real Codex discovery or workflow test.
+The optional **Jira Workflow** plugin contains one team-neutral `current-jira-workflow` skill. Jira behavior depends on the recipient's own approved connection, permissions, project rules, and authorization; it contains no credentials or fixed account binding.
 
-## Sharing and updates
+The core plugin includes no automatic custom-role registration. The separately run helper copies the 13 canonical TOMLs into the selected Codex home's `agents` directory and records only its own files in `.codex-toolkit-agents.json`.
 
-The repository is private. The owner can invite friends through [repository access settings](https://github.com/GotThatWeeFee/codex-toolkit/settings/access); each friend must accept the invitation before accessing it. Then share the repository link, and friends can clone it or download a ZIP using GitHub's Code menu. A repository link alone does not grant access. No collaborator invitations were sent during setup.
+## Boundaries and ownership
 
-For updates, compare with the prior version and merge deliberately; the installer does not overwrite. This is a repository distribution, not an installable Codex plugin package. A plugin can be prepared later if broader distribution is desired. No license was chosen for the personal workflow content; decide the intended reuse terms before public distribution. The optional Playwright content retains its own license.
+Project-specific architecture, business rules, service mappings, Jira conventions, internal examples, test data, and operational documentation belong in their project repositories. Account state, credentials, vendor caches, memories, sessions, logs, audit output, and local hooks also stay local.
 
-Read PORTABILITY.md before use. Account connections, desktop state and permissions do not transfer with this bundle.
+The optional examples are for manual adaptation only: [personal policy](examples/personal-policy.md) and [configuration](examples/config.example.toml). Do not copy either wholesale into an existing account or project.
 
-## Official documentation checked
+No root license is included. This repository does not grant or imply public redistribution rights; obtain the maintainer's permission before sharing outside the intended audience.
 
-- [Local skills and distribution](https://learn.chatgpt.com/docs/build-skills)
-- [Custom agents and inherited permissions](https://learn.chatgpt.com/docs/agent-configuration/subagents)
-- [Configuration layers and project trust](https://learn.chatgpt.com/docs/config-file/config-basic)
+## Updating
+
+Update installed plugins through the native marketplace mechanism, for example `codex plugin marketplace upgrade` after checking your client help. Plugin updates do not update copied role TOMLs. Review changes in a local checkout, then use `Install-Agents.ps1 -Action Update` for ledger-owned, unchanged roles. See [installation](docs/installation.md#update-or-remove-roles).
+
+## Scope and validation limits
+
+This source provides packaging and guidance, not a managed service. Static inspection can confirm the checked-in manifests, paths, helper logic, and documented contracts. It cannot establish marketplace visibility, client dispatch, installation success, agent discovery, filesystem behavior on every machine, or live Jira operations.

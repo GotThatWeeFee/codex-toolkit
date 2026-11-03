@@ -1,0 +1,6 @@
+interface:
+  display_name: "Engineering Pipeline"
+  short_description: "Approval-gated multi-agent software delivery"
+  default_prompt: "Use $engineering-subagent-pipeline to coordinate this development task. Inspect the project first, return a plan for my approval, and do not implement until I approve it."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.codex/audit-event.schema.json",
+  "title": "Engineering pipeline audit event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "sequence", "recorded_at_utc", "source", "event_type", "metadata"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "recorded_at_utc": { "type": "string", "format": "date-time" },
+    "source": { "enum": ["hook", "coordinator"] },
+    "event_type": { "enum": ["SessionStart", "UserPromptSubmit", "SubagentStart", "SubagentStop", "PreCompact", "PostCompact", "Interrupt", "Stop", "SessionEnd", "CoordinatorFact"] },
+    "fact": { "enum": ["PlanApproved", "ImplementationCompleted", "ReviewCompleted", "ValidationCompleted", "HandoffBlocked", "HandoffReady"] },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "workspace_fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "run_fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "coordinator_event_fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "session_fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "agent_fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "model": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{1,80}$" },
+        "permission_mode": { "enum": ["default", "acceptEdits", "bypassPermissions", "plan", "dontAsk"] },
+        "source": { "enum": ["startup", "resume", "clear", "compact"] },
+        "trigger": { "enum": ["manual", "auto"] },
+        "agent_type": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{1,64}$" },
+        "reason": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{1,64}$" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "source": { "const": "coordinator" } } },
+      "then": {
+        "required": ["fact"],
+        "properties": {
+          "event_type": { "const": "CoordinatorFact" },
+          "metadata": { "required": ["workspace_fingerprint", "run_fingerprint", "coordinator_event_fingerprint"] }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "source": { "const": "hook" } } },
+      "then": {
+        "not": { "required": ["fact"] },
+        "properties": { "event_type": { "not": { "const": "CoordinatorFact" } } }
+      }
+    }
+  ]
+}
