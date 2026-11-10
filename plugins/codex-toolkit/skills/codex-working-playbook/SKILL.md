@@ -11,6 +11,8 @@ Follow the recipient's current request, applicable project instructions, and exi
 
 The assistant derives and maintains a concise internal task brief from the user request and inspected context. Track only the outcome, acceptance conditions, invariants, scope, relevant identity, operating constraints, authorized actions, evidence, and consequential decisions that materially affect the work. Do not make the user fill out or restate a template. Surface a short brief only when it helps a decision or the user requests it; ask only for a consequential missing detail.
 
+Report investigation findings, evidence, and handoffs in the chat by default. Do not add investigation reports, task summaries, or handoff notes to project documentation unless the user requests a repository artifact or the work changes durable project guidance that belongs there. Keep temporary evidence in ignored task artifacts when needed, and link to it in chat.
+
 - For a new substantive task or plan, use [task-contract.md](references/task-contract.md).
 - For debugging before a patch, use the diagnosis section in [diagnosis-and-handoff.md](references/diagnosis-and-handoff.md).
 - When carrying work into another chat, use the portable handoff section in [diagnosis-and-handoff.md](references/diagnosis-and-handoff.md).

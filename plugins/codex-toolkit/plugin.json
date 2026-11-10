@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "codex-toolkit",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Reusable engineering skills and an approval-gated engineering pipeline. Custom roles require a separate explicit setup step.",
   "extensions": {
     "com.openai": {

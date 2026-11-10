@@ -49,7 +49,7 @@ Read [installation](docs/installation.md) for prerequisites, updates, and recove
 
 ## What is included
 
-The **Codex Toolkit** plugin contains ten canonical skills: `analyzing-dotnet-performance`, `change-explanation`, `codex-working-playbook`, `dotnet-integration-validation`, `engineering-subagent-pipeline`, `evidence-bound-operations`, `project-aware-coding`, `repository-documentation`, `safe-git-integration`, and `sql-object-impact-analysis`.
+The **Codex Toolkit** plugin contains eleven canonical skills: `analyzing-dotnet-performance`, `change-explanation`, `codex-working-playbook`, `dotnet-integration-validation`, `engineering-subagent-pipeline`, `evidence-bound-operations`, `project-aware-coding`, `repository-documentation`, `safe-git-integration`, `sql-object-impact-analysis`, and `task-model-selection`.
 
 The optional **Jira Workflow** plugin contains one team-neutral `current-jira-workflow` skill. Jira behavior depends on the recipient's own approved connection, permissions, project rules, and authorization; it contains no credentials or fixed account binding.
 
@@ -59,7 +59,7 @@ The core plugin includes no automatic custom-role registration. The separately r
 
 Project-specific architecture, business rules, service mappings, Jira conventions, internal examples, test data, and operational documentation belong in their project repositories. Account state, credentials, vendor caches, memories, sessions, logs, audit output, and local hooks also stay local.
 
-The optional examples are for manual adaptation only: [personal policy](examples/personal-policy.md) and [configuration](examples/config.example.toml). Do not copy either wholesale into an existing account or project.
+The optional examples are for manual adaptation only: [personal policy](examples/personal-policy.md), [configuration](examples/config.example.toml), and [workflow review automation](examples/workflow-review-automation.md). Do not copy these wholesale into an existing account or project.
 
 No root license is included. This repository does not grant or imply public redistribution rights; obtain the maintainer's permission before sharing outside the intended audience.
 

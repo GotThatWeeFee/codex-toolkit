@@ -4,7 +4,7 @@
 
 | Plugin | Purpose | Contents |
 | --- | --- | --- |
-| `codex-toolkit` | Reusable engineering guidance | Ten canonical skills, the engineering-pipeline references, optional audit helper, and canonical custom-agent TOMLs. |
+| `codex-toolkit` | Reusable engineering guidance | Eleven canonical skills, the engineering-pipeline references, optional audit helper, and canonical custom-agent TOMLs. |
 | `jira-workflow` | Optional team-neutral Jira guidance | One `current-jira-workflow` skill and icon asset. |
 
 The manifests describe package metadata; they provide no credentials, fixed Jira bindings, forced model setting, or guarantee of client discovery.
@@ -23,6 +23,7 @@ The manifests describe package metadata; they provide no credentials, fixed Jira
 | `repository-documentation` | Plan or substantially revise repository documentation. |
 | `safe-git-integration` | Prepare integration while preserving changes. |
 | `sql-object-impact-analysis` | Trace database-object dependencies before SQL changes. |
+| `task-model-selection` | Apply an explicitly requested model and reasoning selection policy. |
 
 Each skill is stored once under `plugins/codex-toolkit/skills/`. Guidance never grants permission for tests, Git mutations, deployment, publication, connector writes, or live runs.
 
@@ -32,4 +33,4 @@ The pipeline supplies 13 canonical roles: accessibility, contract, documentation
 
 The pipeline also contains an optional metadata-only local audit helper and schema. It is inactive unless separately authorized with a recipient-approved local audit location; no hooks are installed or activated. Its documented privacy boundary excludes prompts, transcripts, raw workspace paths, tool data, and credentials.
 
-The examples are manual only. Project architecture, business rules, service mappings, Jira rules, internal examples, tests, and operations stay with each project. Caches, credentials, account state, sessions, logs, and audit output are excluded.
+The examples are for deliberate adaptation; the workflow review example can be used to configure an automation after its permissions are reviewed. Project architecture, business rules, service mappings, Jira rules, internal examples, tests, and operations stay with each project. Caches, credentials, account state, sessions, logs, and audit output are excluded.

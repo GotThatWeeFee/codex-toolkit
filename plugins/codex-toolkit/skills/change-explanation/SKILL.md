@@ -13,6 +13,8 @@ Follow the recipient's current request, applicable project instructions, and exi
 
 Whenever the user asks for a commit message, read [references/commit-messages.md](references/commit-messages.md) and return a ready-to-copy subject and detailed body following that guide. Include the change breakdown, previous test results, current observed results, expected results after testing, and numbered local and live testing walkthroughs inside the message itself. Preserve the ordinary explanation workflow below for other requests.
 
+When the user requests MR or commit evidence, or asks for attachable evidence files, gather relevant existing outputs into a concise evidence bundle when practical. Include only artifacts that are safe to share, label reconstructed examples separately from captured outputs, and add a short README stating each file's provenance, what it demonstrates, and any verification limits. Do not fabricate a pre-change capture or include secrets, PII, or full sensitive payloads; create sanitized excerpts where possible. Provide a direct link to the bundle in chat and describe its contents. This does not authorize new tests, live runs, or publishing artifacts to an external service.
+
 After changing or reviewing code, give the user an evidence-backed explanation that makes the change understandable without requiring them to reconstruct the diff.
 
 Account for every changed file in scope, including relevant untracked files, and distinguish pre-existing user changes from the changes being explained. Verification reporting follows the applicable AGENTS.md; an explanation request does not authorize adding or running tests.

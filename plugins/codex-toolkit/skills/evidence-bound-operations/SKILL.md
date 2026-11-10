@@ -32,3 +32,5 @@ Do not infer evidence in one category from evidence in another. In particular, a
 ## Close the Loop
 
 For a change, verify the narrowest safe evidence chain available: source and any authorized test evidence, artifact identity, target configuration, then live behavior when authorized. Report each unavailable link as a verification gap, not as a passed check.
+
+Present investigation findings, evidence boundaries, and remaining questions in the chat by default. Add a report to the project only when the user requests a durable repository artifact or the investigation results in a lasting change to project guidance. Keep sensitive or temporary evidence in appropriate ignored locations and link to it from chat rather than adding it to tracked project documentation.
