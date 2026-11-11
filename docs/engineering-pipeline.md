@@ -16,6 +16,8 @@ The coordinator owns routing and phase progression. Candidate evidence binds bas
 
 The 13 canonical role files deliberately omit fixed model settings; the coordinator selects currently supported model/reasoning under recipient policy. A recommendation never switches the active model. Install roles separately as described in [installation](installation.md); plugin packaging alone does not prove automatic registration.
 
+Give each role a standalone brief with the candidate, scope, and evidence paths. Route routine checks to a lightweight model and use stronger reasoning where the change warrants it. For long tests, retain the run ID, log, and native exit receipt and consult them before restarting. After a correction, rerun the affected checks and document why any earlier evidence still applies.
+
 Neither a skill, plan, nor role authorizes tests, Git changes, connector writes, live runs, deployments, or publication. The normal remediation budget is three implementation cycles and two QA reruns; exceptions require visible coordinator reasoning or a user decision.
 
 ## Optional audit facts

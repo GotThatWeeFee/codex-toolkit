@@ -73,7 +73,15 @@ Only when the recipient has separately authorized the metadata-only audit facili
 
 The coordinator chooses an explicit model and reasoning pair for every spawned role. Follow any recipient model-selection instruction, then confirm the pair against the active runtime capability surface. Do not rely on dated catalogs. Role files intentionally omit fixed model settings so they do not override that choice. Use the recipient model policy when supplied; otherwise select a supported pair suited to the bounded task. Record the task-specific reason for the selected pair; do not reproduce a separate selection policy here.
 
-Use full-history inheritance only when model selection is inherited with it. `fork_turns="all"` cannot carry a model override. To give a subagent an explicit model or reasoning setting, use `fork_turns="none"` with a bounded task brief, then pass a currently supported pair. The current API supports only `all` or `none`. Re-check runtime capabilities before a long-running workflow because availability can change.
+Default to a fresh subagent with a standalone brief containing the exact candidate, relevant paths, ownership or decision, prior findings, and required checks. Use `fork_turns="none"` with an explicit model and effort when supported. Use full-history inheritance when the task genuinely requires it. Keep the role files model-neutral so the coordinator can select a supported pair for each task.
+
+Prefer Standard speed when conserving allowance. Use a lightweight model at low effort for routine discovery, receipt checks, and mechanical comparisons. Use stronger reasoning when implementation or review affects identity, durable state, recovery, permissions, or a difficult test failure. Record the choice and reassess when risk changes.
+
+## Long-running validation
+
+Launch each check once with an exact candidate, run ID, durable log, and exit receipt. Yield while the command runs. Read the receipt first on continuation or a completion signal, when available. If the receipt is missing, check the original handle before considering a restart. An observer timeout is distinct from a native result. Keep waiting for an active original run and report only meaningful changes.
+
+Reproduce failures with a focused check. After repairs, repeat affected gates and carry earlier evidence forward only when the reviewer can justify it against the exact delta and test environment. Run the full suite when the acceptance gate requires it or when focused checks cannot cover the impact.
 
 ## 6. Prevent loop churn
 
