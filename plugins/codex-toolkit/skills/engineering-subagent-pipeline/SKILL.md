@@ -29,9 +29,17 @@ Give every actionable finding a stable ID and record disposition (accepted/fixed
    - **Standard lane:** stop and wait for explicit approval or plan adjustments. This is mandatory for a new feature, material architecture change, public-contract or schema change, migration, authorization/security-sensitive change, production or shared-environment impact, or any unresolved material decision.
    - **Faster lane:** the coordinator may advance after reporting the plan when the work is a bounded internal bug fix, refactor, test improvement, or documentation correction with deterministic local validation; no changed public contract, persistence/schema, authorization, sensitive-data behavior, external integration behavior, or material architecture; and no unresolved user decision. The report must name the qualifying criteria and give the user a clear opportunity to stop or adjust it. If any criterion ceases to hold, return to the standard lane before implementation.
 
+### Code quality criteria
+
+During planning, name the existing patterns the change should follow and a small set of relevant, observable maintainability criteria. Examples include reusing an existing service instead of duplicating its rules, keeping orchestration separate from transport concerns where the project already does so, and making failure handling understandable at the owning boundary. Cite inspected files or symbols; avoid generic cleanliness scores or requirements for speculative abstractions.
+
+Include refactoring needed to meet those criteria in the implementation plan. Record broader cleanup separately with its scope and reason for deferral; do not create tickets or expand implementation scope without authorization.
+
 ## 2. Implement
 
 After approval, give the junior developer only the approved plan revision plus unresolved findings. The junior developer is the sole agent allowed to change project source, tests, configuration, and routine documentation. Implement routine documentation alongside its associated change, preserving user edits and established documentation conventions. Require the junior developer to check new and changed C# XML documentation for signature-complete tags, validate any `<inheritdoc/>` source, and review changed-file formatting against repository configuration. When the plan assigns substantial documentation work to the documentation specialist, give that role sole ownership of the named documentation files and give the junior developer the final behavior, configuration, and validation evidence it needs. Run the documentation specialist after the documented behavior is implemented and after each later behavior-changing remediation; do not run it concurrently with another source writer. Preserve user changes. Apply the shared Git, verification, and authorization policy in the applicable AGENTS.md; an implementation plan does not independently authorize deployment, external writes, or Git mutations. Reuse explicit authorization already granted for the exact scope.
+
+Before handoff, the implementation owner checks changed code against the planned quality criteria, simplifies avoidable complexity, and reports any remaining concern with evidence. Necessary refactoring stays with that owner and preserves approved behavior and contracts.
 
 Require implementation handoffs to identify the entry point, consequential decisions and their evidence, changed behavior, and verification gaps using `change-explanation`. Apply the inline comment policy in `project-aware-coding` during implementation and remediation; keep those policies canonical rather than duplicating them in role prompts. This routine review guidance does not require the optional reviewer-teaching mode.
 
@@ -49,12 +57,12 @@ Run only the review tracks touched by the change. Run at most three read-only sp
 | Performance-sensitive paths, expensive queries, resource limits, caching, throughput, latency, background processing, logging/metrics, or operational failure handling | Performance and operability |
 | User-facing flows, UI components, content, keyboard interaction, colors, forms, or generated documents | Accessibility |
 
-Security is required for each runtime-source, dependency, build, or deployment-configuration change; it may be skipped only for a clearly non-runtime documentation-only change, with the reason recorded. Do not add a generic style reviewer: the senior engineer owns maintainability and architecture. Consolidate actionable specialist findings into one remediation packet for the junior developer. Notes without a concrete correctness, security, compatibility, test, performance, operability, or accessibility impact do not trigger rework.
+Security is required for each runtime-source, dependency, build, or deployment-configuration change; it may be skipped only for a clearly non-runtime documentation-only change, with the reason recorded. Do not add a generic style reviewer: the senior engineer owns maintainability and architecture. Consolidate actionable specialist findings into one remediation packet for the junior developer. Specialist notes without a concrete impact in their assigned review track do not trigger rework. The senior gate separately evaluates maintainability using the criteria below.
 
 ## 4. Gate progression
 
 1. Specialist reviews pass or their actionable findings are remediated and selectively re-reviewed.
-2. Senior engineer reviews the approved intent, implementation diff, specialist evidence, and validation plan. Return only concrete must-fix findings to the junior developer; otherwise advance to QA.
+2. Senior engineer reviews the approved intent, implementation diff, specialist evidence, and validation plan, including the code quality criteria. Apply the maintainability review below. Return concrete must-fix findings to the junior developer in one remediation packet; after corrections, re-review the affected delta before advancing to QA.
 3. QA performs the checks authorized under the applicable AGENTS.md verification policy and reports commands, outcomes, and unrun validation. QA does not alter source. Tests require a user request; a plan or project procedure alone does not authorize them or external writes. Use a designated non-production environment only when the current explicit authorization covers the exact access and any isolated test-data writes. Minimize and identify that data, report the environment and evidence, and never target production through this QA step. Failures or missing required coverage return to the junior developer.
 4. Final reviewer independently checks scope, acceptance criteria, open findings, validation evidence, release-risk boundaries, and the planner's documentation-impact assessment. Before review, the coordinator must reconcile the final working tree from the repository root and record every tracked, modified, deleted, renamed, and untracked file. For each file, record the responsible phase/agent, what changed, why it changed, and the evidence or finding that caused it; explicitly identify intentional no-op files and any change not attributable to the approved plan. The final reviewer must review this complete change ledger against the checkout, not just the diffs returned by individual agents. Confirm required documentation was updated accurately and consistently with the implementation, that changed C# documentation and formatting meet applicable repository rules, or that the recorded `not applicable` decision remains supported by the final diff. Only the coordinator may declare the work ready for the user's review.
 
@@ -68,6 +76,18 @@ The final handoff must be coordinator-produced from the final checkout and must 
 - **Checks passed, checks not run, residual risks, and any user decision still needed.**
 
 The handoff must also include a short remediation history when more than one agent or cycle changed the working tree, showing which finding or review decision caused each follow-up change. It is not authorization to release, deploy, stage, commit, or push.
+
+### Maintainability review and improvement loop
+
+The senior engineer performs an explicit, read-only review of changed code and affected call paths for duplicated business rules, unclear responsibilities, unnecessary layers or branching, avoidable coupling, and unexplained departures from established project patterns. Scale the review to the change; no separate refactor agent or extra gate is required.
+
+Each actionable finding must name the file or symbol, cite the evidence, explain a concrete maintenance consequence (for example, two rule implementations likely to drift or failure handling obscured by mixed responsibilities), and propose the smallest in-scope correction. A preference for a different naming or abstraction style alone is insufficient. Classify findings as:
+
+- **Required now:** the change introduces or materially worsens a concrete maintenance problem, or misses an agreed quality criterion. Return it to the implementation owner and verify its resolution before QA.
+- **Follow-up:** a worthwhile improvement exceeds the approved scope or addresses unrelated existing debt. Record scope, rationale, proposed owner, and residual risk in the handoff without silently creating a task or treating it as completed.
+- **Preference:** no demonstrated maintenance consequence. Do not block progression or request rework.
+
+Use the existing finding IDs, dispositions, candidate evidence, and remediation budget. If a required correction needs a material scope or architecture change, return to planning under the existing approval rules. Keep one source writer; for a separately approved substantial refactor, assign it to the implementation owner as sequential work with explicit behavior invariants and authorized validation. Broader refactoring is not an automatic post-implementation phase.
 
 ### Optional local audit facts and handoff
 

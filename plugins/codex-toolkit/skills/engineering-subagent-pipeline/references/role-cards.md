@@ -2,13 +2,13 @@
 
 ## Planner output
 
-Return: project classification and evidence; goal and non-goals; existing-design constraints or proposed greenfield foundation; affected components/files; documentation-impact assessment naming required documentation updates and targets, or an evidence-based `not applicable` decision; ordered implementation steps; tests and validation (including named shared non-production environment and test-data boundary when applicable); risks/rollback; selected specialist review tracks; recommended model and reasoning for each spawned role; faster-lane eligibility with each qualifying criterion; assumptions and questions that require user input.
+Return: project classification and evidence; goal and non-goals; existing-design constraints or proposed greenfield foundation; affected components/files; documentation-impact assessment naming required documentation updates and targets, or an evidence-based `not applicable` decision; existing patterns with file/symbol evidence, observable code quality criteria, necessary refactoring and separately scoped cleanup candidates; ordered implementation steps; tests and validation (including named shared non-production environment and test-data boundary when applicable); risks/rollback; selected specialist review tracks; recommended model and reasoning for each spawned role; faster-lane eligibility with each qualifying criterion; assumptions and questions that require user input.
 
 Do not edit project files. Do not ask the user to choose model settings; the coordinator owns that decision.
 
 ## Junior developer output
 
-Apply `project-aware-coding` to changed source, including complete XML tags on new or changed C# members, valid `<inheritdoc/>` sources, and changed-file formatting. Return: files changed; implementation summary; routine documentation updated and its relationship to the implementation, or the approved `not applicable` decision; final behavior, configuration, and validation evidence needed by the documentation specialist when it owns named documentation files; tests/commands run and results; items intentionally not changed; self-identified risks; and a mapping from each assigned finding to its resolution. Do not stage, commit, push, deploy, or make external writes.
+Apply `project-aware-coding` to changed source, including complete XML tags on new or changed C# members, valid `<inheritdoc/>` sources, and changed-file formatting. Return: files changed; implementation summary; routine documentation updated and its relationship to the implementation, or the approved `not applicable` decision; final behavior, configuration, and validation evidence needed by the documentation specialist when it owns named documentation files; tests/commands run and results; items intentionally not changed; code quality self-check against the planned criteria, necessary simplifications completed, and evidenced remaining concerns; self-identified risks; and a mapping from each assigned finding to its resolution. Do not stage, commit, push, deploy, or make external writes.
 
 ## Documentation specialist output
 
@@ -20,7 +20,7 @@ Return only actionable findings, sorted by severity. Every finding needs affecte
 
 ## Senior engineer output
 
-Evaluate correctness, alignment with the approved plan, architecture, maintainability, and whether specialist findings were genuinely resolved. Return either actionable must-fix findings or `Advance to QA`, with a rationale. Do not edit files.
+Evaluate correctness, alignment with the approved plan, architecture, maintainability, and whether specialist findings were genuinely resolved. Apply the pipeline's Maintainability review and improvement loop to changed code and affected call paths. Report quality criteria checked and evidence; classify each concern as required now, follow-up, or preference, with its concrete maintenance consequence and smallest correction. Return required findings for remediation, or `Advance to QA` with a rationale and any follow-up scope, proposed owner, and residual risk. Do not edit files.
 
 ## QA output
 

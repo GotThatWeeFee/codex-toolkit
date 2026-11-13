@@ -4,11 +4,13 @@
 
 ## Flow
 
-1. **Discover and plan:** inspect project instructions, implementation, configuration, tests, documentation, and change state; classify the project and documentation impact.
+1. **Discover and plan:** inspect project instructions, implementation, configuration, tests, documentation, and change state; classify the project and documentation impact; identify established patterns, observable quality criteria, and refactoring required for the change.
 2. **Approve:** material features, architecture/contracts, migrations, authorization-sensitive work, shared-environment impact, or unresolved decisions use the standard lane and wait for explicit approval. Faster-lane eligibility is recorded, not assumed.
 3. **Implement:** one junior developer owns source, tests, configuration, and routine documentation. A documentation specialist owns only explicitly assigned substantial guides after behavior is settled.
 4. **Review and remediate:** use relevant read-only specialists, record finding IDs/dispositions/dissent, and re-run only reviews affected by corrections.
-5. **Gate:** senior review, authorized QA, and final review reconcile the complete working tree before coordinator handoff.
+5. **Gate:** senior review explicitly checks maintainability against planned quality criteria and returns concrete required corrections to the implementation owner before authorized QA. Final review reconciles the complete working tree before coordinator handoff.
+
+The implementation owner checks code quality before handoff. The senior reviewer independently checks duplicated rules, unclear responsibilities, unnecessary complexity, coupling, and departures from established patterns. Findings need evidence, a concrete maintenance consequence, and a bounded correction. Required corrections return to the same owner and are re-reviewed within the existing remediation budget. Broader cleanup is recorded with scope, rationale, proposed owner, and risk; preferences alone do not block progression. A substantial refactor needs its own approved scope, behavior invariants, and authorized validation, performed sequentially by the implementation owner. The workflow adds no automatic refactor agent or cleanup phase.
 
 The coordinator owns routing and phase progression. Candidate evidence binds baseline HEAD, initial state, patch, and relevant non-patch hashes, including instructions and docs; byte changes invalidate affected review evidence. The workflow distinguishes implemented, planned, and unknown behavior and preserves already authorized project constraints.
 
