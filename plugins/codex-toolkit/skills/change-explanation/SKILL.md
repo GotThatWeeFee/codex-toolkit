@@ -31,6 +31,17 @@ Group related edits into a single change. Do not narrate every changed line unle
 - **Workflow impact:** Callers, user journeys, jobs, integrations, storage, configuration, deployment behavior, compatibility, or operational consequences that are directly affected. Distinguish direct impact from likely-but-unverified downstream impact.
 - **Risk and verification:** Regressions worth watching; checks performed and what each check establishes; remaining untested boundaries, especially external services and live environments.
 
+## Make the Change Easy to Review
+
+For implemented changes, include a concise review guide grounded in the final diff and inspected call paths. For a simple change, a sentence with a file link may be enough; for changes spanning a workflow, identify:
+
+- The entry point and a useful reading order through the changed files or symbols, with direct file/line links where supported.
+- The behavior before and after the change, following the important path through validation, transformation, state changes, and failure handling as applicable.
+- The consequential implementation choices and their evidence-backed reasons, including constraints or alternatives only when they help assess the actual change.
+- The checks performed and the boundaries they cover, followed by unverified assumptions, remaining risks, or decisions needing human attention.
+
+Keep the guide proportional and combine it with the normal explanation rather than repeating it in another report. Generate links and descriptions from the final checkout after remediation. Do not substitute subagent summaries for inspecting the combined change, create a separate review document unless requested, or imply that comments establish correctness. Inline comment policy belongs to `project-aware-coding`; this guide helps the reviewer navigate and evaluate the implementation.
+
 ## Reporting standard
 
 Lead with a short change summary, then use one subsection per cohesive behavior. Keep it proportionate: simple local edits need brief explanations; cross-cutting changes need a clear flow from entry point to affected boundary.

@@ -64,6 +64,14 @@ Follow model-selection instructions only when supplied by the recipient. This sh
 - Update existing XML documentation when changing a member's signature or documented behavior. Avoid unrelated documentation churn.
 - Outside C#/.NET, use the language's idiomatic documentation format rather than inserting invalid XML comments, while preserving the same documentation intent.
 
+## Explain Non-Obvious Intent Inline
+
+- While implementing or changing code, add short comments beside logic whose purpose or constraints would otherwise slow review: business rules, required ordering, state invariants, compatibility workarounds, failure or retry behavior, and non-obvious transformations. Explain what the block accomplishes and why its approach matters when that is not clear from the code and API documentation.
+- Prefer clear names and small, cohesive code first. Do not narrate syntax, repeat method headers, comment every statement, or impose a comment quota. Leave straightforward code uncommented.
+- Ground rationale in the request, inspected code, contracts, or established project evidence. Never invent historical intent or claim a safety, performance, or external-service guarantee that has not been established. Put unresolved assumptions in the handoff rather than presenting them as facts in code.
+- Keep comments next to the relevant branch or block and describe the enduring constraint, not the agent's editing process. Follow the language and repository's comment style; use a short example only when it materially clarifies a rule or transformation.
+- Update or remove nearby comments when behavior changes. During static review, trace each added or affected comment against the actual control flow, including failure paths, and correct misleading or stale explanations. Keep unrelated comment cleanup out of scope.
+
 ## Keep Formatting Consistent
 
 - Before editing, inspect applicable `.editorconfig`, formatter and analyzer settings, and nearby code. Preserve established indentation, braces, line breaks, and spacing in changed code.
@@ -95,7 +103,7 @@ Follow model-selection instructions only when supplied by the recipient. This sh
 
 1. Review the diff for accidental scope expansion and formatting noise.
 2. Choose relevant checks under the applicable AGENTS.md verification policy; run tests only when requested. Report any unperformed verification as a gap.
-3. Review new and changed C# members for complete XML tags, including inherited documentation, and confirm the changed files follow the applicable formatting rules.
+3. Review new and changed C# members for complete XML tags, including inherited documentation, confirm the changed files follow the applicable formatting rules, and check added or affected inline comments against the final behavior and supported rationale.
 4. Report verification performed, any failures, and any checks that could not be run.
 5. Summarize what changed, why it changed, remaining risks, and any decisions or follow-up work needed from the user.
 
