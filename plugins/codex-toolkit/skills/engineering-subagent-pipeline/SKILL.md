@@ -1,6 +1,6 @@
 ---
 name: engineering-subagent-pipeline
-description: Coordinate approval-gated, multi-agent software engineering from project discovery and planning through implementation, risk-based review, QA, and final handoff. Use for non-trivial development work that benefits from a planner, a single implementation owner, and independent review; do not use for a small one-file change or a standalone code review.
+description: Coordinate approval-gated, multi-agent software engineering from project discovery and planning through implementation, risk-based review, QA, and final handoff. Use for non-trivial development work that benefits from a planner, a single implementation owner, and independent review, and continue that workflow for related follow-up questions, reviews, and fixes after handoff. Exclude independent small one-file changes and standalone code reviews; those exclusions do not bypass continuation of an existing pipeline.
 ---
 
 ## Recipient policy and authorization
@@ -16,6 +16,18 @@ Act as the coordinator. Maintain a concise state record with the project classif
 Before dispatch, read [candidate identity](references/candidate-identity.md) and [agent lifecycle](references/agent-lifecycle.md). Bind all evidence to baseline HEAD, initial state, canonical patch and relevant non-patch hashes, including instruction and documentation bytes. Record the candidate fingerprint on every review; changed bytes invalidate affected evidence. Maintain the run registry outside candidate files.
 
 Give every actionable finding a stable ID and record disposition (accepted/fixed, rejected with evidence, deferred with explicit owner/risk, or unresolved), affected candidate, and reviewer dissent. A rejected finding is not silently passed: material dissent goes to the senior/final gate and unresolved blocking risk prevents readiness. Rerun only affected reviews. Preserve already authorized design decisions and existing project constraints during rewrites. Optional reviewer teaching is provided only when requested and adds no compulsory approval gate; see [reviewer teaching](references/reviewer-teaching.md).
+
+## Continue after questions, feedback, or handoff
+
+Pipeline ownership continues when the user asks about, reviews, or reports a problem with an implementation produced by this workflow, including after a final handoff or in a resumed chat. Route by the relationship to the implementation, not by message length, file count, or whether the previous turn declared completion. The independent small-change and standalone-review exclusions do not apply to this continuation.
+
+- Restore the approved intent, constraints, ownership, findings and dispositions, remediation counters, candidate identity, and evidence from the run record. Inspect the current checkout and user changes before relying on earlier evidence. If the record is incomplete, reconstruct what can be verified and identify gaps; do not invent approvals or passing gates. Ask only for a consequential missing decision.
+- For explanation-only questions, the coordinator may answer from inspected implementation and evidence without spawning the full pipeline or changing files. Seek the relevant owner's or reviewer's clarification when necessary. If the question reveals a possible defect, record and investigate it; a question alone does not authorize a code change.
+- When the user requests a related fix or adjustment within the approved intent, record the finding or requested delta and return it to the implementation owner. Reuse that agent when available, or transfer its restored contract to a replacement of the same role under the lifecycle rules. Preserve prior authorized decisions and unrelated user edits. A small correction still uses this ownership and review path.
+- Refresh the candidate identity after the correction. Select specialist tracks against the actual changed surfaces, including any newly affected track; repeat affected specialist reviews and the senior, authorized QA, and final gates before a fresh coordinator handoff. Carry earlier evidence forward only with an explicit justification for the unchanged surface and environment. Never describe earlier tests as validation of newly changed code.
+- Retain the existing plan and authorization for an in-scope correction; do not request the same approval again. Material scope or architecture changes return to planning under the existing approval rules. Tests, Git mutations, external writes, live runs, and deployment retain their separate authorization requirements.
+- Preserve finding IDs and cumulative remediation counters across turns and handoffs; a follow-up message does not reset exhausted budgets or unresolved blockers. Record each correction and its resulting evidence in the change ledger and remediation history. If the optional audit run already has a terminal handoff fact, preserve that history and use a linked new run for subsequent facts; carry forward the correction counters and unresolved findings.
+- If required roles or evidence are unavailable, report the exact gap and preserve a resumable handoff. Do not silently replace independent gates with coordinator-only implementation or declare readiness from stale evidence.
 
 ## 1. Discover and plan
 

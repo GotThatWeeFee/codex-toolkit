@@ -15,6 +15,10 @@ Produce maintainable code that fits the repository instead of imposing a generic
 
 Apply this skill to every request that would create, change, debug, refactor, review, test, or otherwise inspect code, including a projectless task or a request before a repository has been identified. If it is genuinely unclear whether a request is coding, apply the relevant project conventions without adding an approval gate. Exclude only requests that are clearly non-coding.
 
+## Continue an existing engineering pipeline
+
+When the current request concerns an implementation previously handled by `engineering-subagent-pipeline`, load that skill and follow its continuation rules, including after handoff or in a resumed chat. Related questions may be answered from inspected evidence; requested fixes return to the implementation owner and affected review gates. Do not treat a short follow-up or one-file correction as an independent small task that bypasses the existing pipeline. Preserve prior decisions and authorization, reconcile the current candidate, and restore findings, counters, and evidence before continuing. An unrelated small task remains subject to normal skill selection.
+
 ## Follow the Instruction Hierarchy
 
 Apply guidance in this order:
