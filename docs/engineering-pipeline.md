@@ -1,6 +1,6 @@
 # Engineering pipeline
 
-`engineering-subagent-pipeline` is an approval-gated coordinator workflow for non-trivial development work and its related follow-ups. Independent small one-file changes and standalone reviews do not require it; related questions, reviews, and corrections continue the existing workflow even after handoff.
+`engineering-subagent-pipeline` is an approval-gated coordinator workflow primarily for non-trivial initial implementations. Routine follow-up questions, corrections, small one-file changes, and standalone reviews do not require the full pipeline.
 
 ## Flow
 
@@ -14,13 +14,11 @@ The implementation owner checks code quality before handoff. The senior reviewer
 
 The coordinator owns routing and phase progression. Candidate evidence binds baseline HEAD, initial state, patch, and relevant non-patch hashes, including instructions and docs; byte changes invalidate affected review evidence. The workflow distinguishes implemented, planned, and unknown behavior and preserves already authorized project constraints.
 
-## Follow-up questions and fixes
+## Follow-up questions and corrections
 
-The coordinator restores the approved intent, ownership, candidate, findings, counters, and evidence, then reconciles them against the current checkout. An explanation question can be answered from inspected evidence without running every role; a question alone does not authorize edits. A requested correction returns to the implementation owner, or a replacement of the same role with a restored handoff. One-file corrections follow this continuation path too.
+Handle routine follow-up questions and corrections directly with project-aware engineering and checks proportionate to the actual change. Prior use of the pipeline does not require restarting its roles or gates after handoff. Preserve relevant approved decisions, unresolved findings, authorization boundaries, and unrelated user changes; inspect the current implementation before relying on earlier evidence. Do not present earlier checks as validation of newly changed code.
 
-After a correction, refresh the candidate and repeat affected specialist reviews, senior review, authorized QA, and final review. Select any newly affected review tracks. Retain earlier evidence only with a justification for its continued applicability, and identify checks not run against the new code. In-scope fixes retain existing decisions and approval; material scope or architecture changes return to planning. Missing context or unavailable roles must be reported rather than replaced with assumed approval or coordinator-only gates.
-
-Carry finding IDs, unresolved blockers, correction history, and cumulative remediation budgets across turns and handoffs. A follow-up does not reset a budget. If optional audit facts are enabled and the earlier run has a terminal handoff, preserve it and link a new run while carrying forward counters and findings. See the skill's continuation section for the canonical procedure.
+Use the full pipeline for follow-up work only when the user requests it or the new scope independently warrants substantial planning, implementation ownership, and independent review. Corrections required to resolve findings during an active pipeline still follow that run's remediation process through handoff.
 
 ## Roles and authorization
 

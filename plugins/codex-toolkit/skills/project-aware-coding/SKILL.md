@@ -15,9 +15,11 @@ Produce maintainable code that fits the repository instead of imposing a generic
 
 Apply this skill to every request that would create, change, debug, refactor, review, test, or otherwise inspect code, including a projectless task or a request before a repository has been identified. If it is genuinely unclear whether a request is coding, apply the relevant project conventions without adding an approval gate. Exclude only requests that are clearly non-coding.
 
-## Continue an existing engineering pipeline
+## Follow-up questions and corrections
 
-When the current request concerns an implementation previously handled by `engineering-subagent-pipeline`, load that skill and follow its continuation rules, including after handoff or in a resumed chat. Related questions may be answered from inspected evidence; requested fixes return to the implementation owner and affected review gates. Do not treat a short follow-up or one-file correction as an independent small task that bypasses the existing pipeline. Preserve prior decisions and authorization, reconcile the current candidate, and restore findings, counters, and evidence before continuing. An unrelated small task remains subject to normal skill selection.
+Handle routine follow-up questions and corrections directly with project-aware engineering and checks proportionate to the actual change. Prior use of the pipeline does not require restarting its roles or gates after handoff. Preserve relevant approved decisions, unresolved findings, authorization boundaries, and unrelated user changes; inspect the current implementation before relying on earlier evidence. Do not present earlier checks as validation of newly changed code.
+
+Use the full pipeline for follow-up work only when the user requests it or the new scope independently warrants substantial planning, implementation ownership, and independent review. Corrections required to resolve findings during an active pipeline still follow that run's remediation process through handoff.
 
 ## Follow the Instruction Hierarchy
 
