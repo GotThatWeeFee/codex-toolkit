@@ -5,6 +5,7 @@ Derive this brief from the request and inspected context. Maintain it internally
 - **Outcome:** The user-visible result, in one sentence.
 - **Acceptance:** The observable conditions needed to establish the requested result; no fixed quota.
 - **Business invariants:** Rules that would invalidate an otherwise plausible design.
+- **Preservation map:** When extending an existing workflow, identify its entry point, downstream path, and contracts that must remain intact. Record any intended contract change and its justification before proposing an abstraction or recovery flow. Keep this proportional to the affected path; omit it when no existing behavior is involved.
 - **Out of scope:** Specific adjacent work that must not enter this change.
 - **Identity:** The identity relevant to the task. For code, establish checkout and dirty work; investigate package/assembly identity for dependency mismatches and actual prompt/settings identity for evaluations. Do not require every identity on every task.
 - **Operating constraints:** Topology, persistence, permitted infrastructure, and deployment boundaries.
