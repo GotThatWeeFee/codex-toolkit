@@ -1,6 +1,6 @@
 ---
 name: codex-working-playbook
-description: Use when substantive work needs a structured task brief, root-cause diagnosis before changes, or a portable handoff between chats. Load only the relevant template; avoid ceremony for simple requests.
+description: Use when substantive work needs a structured task brief, checkpoints for a long-running goal, root-cause diagnosis before changes, or a portable handoff between chats. Load only the relevant template; avoid ceremony for simple requests.
 ---
 
 ## Recipient policy and authorization
@@ -16,6 +16,16 @@ Report investigation findings, evidence, and handoffs in the chat by default. Do
 - For a new substantive task or plan, use [task-contract.md](references/task-contract.md).
 - For debugging before a patch, use the diagnosis section in [diagnosis-and-handoff.md](references/diagnosis-and-handoff.md).
 - When carrying work into another chat, use the portable handoff section in [diagnosis-and-handoff.md](references/diagnosis-and-handoff.md).
+
+## Long-running goals
+
+For a persistent goal or sustained autonomous task, derive the next concrete checkpoint and its completion evidence from the requested outcome. Track the remaining acceptance conditions, current blocker, and next authorized action in the internal task brief. Use existing task artifacts to resume from the last verified state.
+
+Honor user-supplied time, token, cost, or iteration budgets and their stop conditions. Set a goal token budget only when explicitly requested. When the user raises usage concerns, identify repeated work and suggest a bounded next milestone using measured usage when available. Avoid invented savings estimates or a new approval checkpoint for already-authorized work.
+
+Reuse verification evidence while the relevant files, inputs, and environment remain unchanged. Repeat checks when a change or unresolved failure invalidates that evidence. After a failed attempt, retain its result and choose the next action that can resolve the blocker. A continuation should advance the task or explain a concrete dependency, with enough saved state to resume without repeating completed work.
+
+Completion requires evidence for the acceptance conditions. Follow explicit pause requests and applicable budget limits. If progress requires a user decision or external change, preserve the blocker, evidence, and next action, and follow the active goal tool's status rules.
 
 For an explicitly requested ten-task workflow trial, use [ten-task-trial.md](references/ten-task-trial.md). Do not introduce a scorecard into unrelated tasks.
 

@@ -9,6 +9,7 @@ Derive this brief from the request and inspected context. Maintain it internally
 - **Out of scope:** Specific adjacent work that must not enter this change.
 - **Identity:** The identity relevant to the task. For code, establish checkout and dirty work; investigate package/assembly identity for dependency mismatches and actual prompt/settings identity for evaluations. Do not require every identity on every task.
 - **Operating constraints:** Topology, persistence, permitted infrastructure, and deployment boundaries.
+- **Continuation:** For sustained work, the next concrete checkpoint, its completion evidence, user-supplied budget and stop conditions, and the saved state needed to resume. Omit when irrelevant.
 - **Authorized actions:** Inspection/editing and any explicitly authorized tests, external actions, or Git actions.
 - **Evidence needed:** Source, build, checks, user flow, or live evidence that establishes acceptance.
 - **Decision needed:** Only a consequential unresolved question; otherwise proceed with reversible choices.

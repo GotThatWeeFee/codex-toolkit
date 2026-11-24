@@ -32,6 +32,7 @@ Use when context must move to another chat. Include only current, actionable con
 - What remains unproven.
 - Open hypothesis or blocker.
 - Next smallest action.
+- For sustained work, the last verified checkpoint, remaining acceptance conditions, reusable verification evidence and its revision or inputs, and any user-supplied budget and stop conditions.
 - Authorization still in force and any boundary requiring a new decision.
 
 Keep it short enough to use without rereading the transcript. Exclude secrets, obsolete alternatives, and full tool logs.
